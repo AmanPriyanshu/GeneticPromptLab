@@ -6,6 +6,7 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import json
 from openai import OpenAI
+from function_templates import function_templates
 
 with open("openai_api.key", "r") as f:
     key = f.read()
@@ -17,19 +18,21 @@ def send_query2gpt(client, messages, function_template):
         messages=messages,
         temperature=0,
         max_tokens=512,
-        functions=function_template, 
-        function_call={"name": function_template[0]["name"]}
+        functions=[function_template], 
+        function_call={"name": function_template["name"]}
     )
     answer = response.choices[0].message.function_call.arguments
     generated_response = json.loads(answer)
     return generated_response
 
 class GeneticPromptLab:
-    def __init__(self, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10):
+    def __init__(self, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1):
         self.init_and_fitness_sample = init_and_fitness_sample
         self.test_questions_list = test_questions_list
         self.test_answers_label = test_answers_label
         self.label_dict = label_dict
+        self.problem_description = problem_description
+        self.window_size_init = window_size_init
 
         self.model = SentenceTransformer(model_name)
         self.sample_p = sample_p
@@ -39,14 +42,26 @@ class GeneticPromptLab:
         self.embeddings = self.model.encode(self.train_questions_list, show_progress_bar=True)
         self.already_sampled_indices = set()
 
+    def create_prompts(self, data):
+        data_doubled = data+data
+        batched_messages = []
+        for i in range(len(data)):
+            sample = data_doubled[i:i+self.window_size_init]
+            sample_prompt = "\n".join(["Question: \"\"\""+s["q"]+"\"\"\"\nCorrect Label:\"\"\""+s["a"]+"\"\"\"" for s in sample])
+            messages = [{"role": "system", "content": function_templates[0]["description"]+"\n\nNote: For this task the labels are: "+"\n".join([str(k)+". "+str(v) for k,v in self.label_dict.items()])}, {"role": "user", "content": "Observe the following samples:\n\n"+sample_prompt}]
+            batched_messages.append(messages)
+        return batched_messages
+
     def generate_init_prompts(self):
         distinct_samples = self.sample_distinct(self.init_and_fitness_sample)
+        data = []
         for sample_index in distinct_samples:
             question = self.train_questions_list[int(sample_index)]
             answer = self.train_answers_label[int(sample_index)]
-            print(question, answer)
-        ## FILL HERE
-        exit()
+            data.append({"q": question, "a": self.label_dict[answer]})
+        prompts = self.create_prompts(data)
+        
+        return prompts
 
     def sample_distinct(self, n):
         embeddings = self.embeddings
@@ -124,20 +139,21 @@ if __name__ == '__main__':
     train_path = './data/ag_news_train.csv'
     test_path = './data/ag_news_test.csv'
     model_name = 'multi-qa-MiniLM-L6-cos-v1'
-    sample_p = 0.01
     train_data = pd.read_csv(train_path)
     test_data = pd.read_csv(test_path)
     with open("./data/ag_news_label_dict.json", "r") as f:
         label_dict = json.load(f)
         label_dict = {i:v for i,v in enumerate(label_dict)}
+    problem_description = "AG is a collection of more than 1 million news articles. News articles have been gathered from more than 2000 news sources by ComeToMyHead in more than 1 year of activity. ComeToMyHead is an academic news search engine which has been running since July, 2004. The dataset is provided by the academic comunity for research purposes in data mining. Your objective is a classification label, with possible values including World (0), Sports (1), Business (2), Sci/Tech (3)."
 
     train_questions_list, train_answers_label, test_questions_list, test_answers_label = train_data['question'].tolist(), train_data['label'].tolist(), test_data['question'].tolist(), test_data['label'].tolist()
     # Create GeneticPromptLab instance
 
     population_size = 10
     generations = 10
+    sample_p = 0.01
 
-    lab = GeneticPromptLab(train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p, init_and_fitness_sample=population_size)
+    lab = GeneticPromptLab(problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p, init_and_fitness_sample=population_size)
     optimized_prompts = lab.genetic_algorithm(generations)
 
     print("Optimized Prompts:", optimized_prompts)
