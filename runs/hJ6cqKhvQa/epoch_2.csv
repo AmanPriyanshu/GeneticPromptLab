@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Create a prompt that helps the model accurately categorize the queries into the correct labels of World, Sports, Business, and Sci/Tech, based on the examples provided.",0.875
+Analyze news articles to determine their classification based on the content.,0.875
+"Predict the classification category of a news article through content analysis. The classification categories include World, Sports, Business, and Sci/Tech.",0.875
+"Given a news article, identify the category of the article based on its content. The categories include World, Sports, Business, and Sci/Tech.",0.875
+"Modify the provided examples to create a detailed instruction that assists the model in precisely classifying news articles into the correct categories: World, Sports, Business, Sci/Tech. Employ advanced content analysis techniques for accurate news article classification.",0.875
+"Given a news segment, assess its material to anticipate the classification tag. The classification tags consist of World, Sports, Business, and Sci/Tech. Take into account the setting, dialect, and crucial details in the segment to ensure a precise classification.",0.875
+"Given the upcoming news articles, can you distinguish and assign them to the correct categories of World, Sports, Business, or Sci/Tech?",1.0
+"Based on the content of the provided news articles, predict the category of each article.",0.875

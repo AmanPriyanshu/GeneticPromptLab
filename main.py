@@ -5,10 +5,15 @@ from sklearn.metrics import pairwise_distances_argmin_min
 from sentence_transformers import SentenceTransformer
 import numpy as np
 import json
+import os
+import string
 from openai import OpenAI
 import time
 from tqdm import tqdm
 from function_templates import function_templates
+import warnings
+warnings.filterwarnings("ignore", message="`resume_download` is deprecated and will be removed in version 1.0.0.")
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 with open("openai_api.key", "r") as f:
     key = f.read()
@@ -29,7 +34,8 @@ def send_query2gpt(client, messages, function_template, temperature=0, pause=5):
     return generated_response
 
 class GeneticPromptLab:
-    def __init__(self, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1, generations=10):
+    def __init__(self, client, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1, generations=10):
+        self.client = client
         self.generations = generations
         self.init_and_fitness_sample = init_and_fitness_sample
         self.test_questions_list = test_questions_list
@@ -53,7 +59,7 @@ class GeneticPromptLab:
             sample = data_doubled[i:i+self.window_size_init]
             sample_prompt = "\n".join(["Question: \"\"\""+s["q"]+"\"\"\"\nCorrect Label:\"\"\""+s["a"]+"\"\"\"" for s in sample])
             messages = [{"role": "system", "content": "Problem Description: "+self.problem_description+"\n\n"+function_templates[0]["description"]+"\n\nNote: For this task the labels are: "+"\n".join([str(k)+". "+str(v) for k,v in self.label_dict.items()])}, {"role": "user", "content": "Observe the following samples:\n\n"+sample_prompt}]
-            prompt = send_query2gpt(client, messages, function_templates[0])['prompt']
+            prompt = send_query2gpt(self.client, messages, function_templates[0])['prompt']
             prompts.append(prompt)
         return prompts
 
@@ -93,6 +99,12 @@ class GeneticPromptLab:
         return sampled_indices
 
     def genetic_algorithm(self, mutation_rate=0.1):
+        output_directory = "runs"
+        run_id = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        run_path = os.path.join(output_directory, run_id)
+        if not os.path.exists(run_path):
+            os.makedirs(run_path)
+        print(f"Run ID: {run_id} has been created at {run_path}")
         initial_prompts = self.generate_init_prompts()
         population = initial_prompts
         bar = tqdm(range(self.generations))
@@ -100,6 +112,11 @@ class GeneticPromptLab:
             print("Complete Population:",population)
             fitness_scores, questions_list, correct_answers_list = self.evaluate_fitness(population)
             top_prompts = self.select_top_prompts(fitness_scores, population)
+            df = pd.DataFrame({
+                'Prompt': population,
+                'Fitness Score': fitness_scores
+            })
+            df.to_csv(os.path.join(run_path, f'epoch_{gen_id}.csv'), index=False)
             print()
             print("Top Population:", top_prompts)
             print("\n\n")
@@ -127,7 +144,7 @@ class GeneticPromptLab:
             tmp_function_template["parameters"]["properties"]["label_array"]["items"]["properties"]["label"]["description"] += str([v for _,v in self.label_dict.items()])
             tmp_function_template["parameters"]["properties"]["label_array"]["minItems"] = len(distinct_sample_indices)
             tmp_function_template["parameters"]["properties"]["label_array"]["maxItems"] = len(distinct_sample_indices)
-            labels = send_query2gpt(client, messages, tmp_function_template)
+            labels = send_query2gpt(self.client, messages, tmp_function_template)
             labels = [l['label'] for l in labels['label_array']]
             accuracy = sum(1 if a == b else 0 for a, b in zip(labels, correct_answers_list)) / len(labels)
             acc_list.append(accuracy)
@@ -157,13 +174,13 @@ class GeneticPromptLab:
         tmp_function_template = function_templates[2]
         tmp_function_template["parameters"]["properties"]["mutated_prompt"]["description"] += str(round(random.random(), 3))
         messages = [{"role": "system", "content": "You are a prompt-mutator as part of an over-all genetic algorithm. Mutate the following prompt while not detracting from the core-task but still rephrasing/mutating the prompt.\n\n"+"Note: For this task the over-arching Problem Description is: "+self.problem_description}, {"role": "user", "content": "Modify the following prompt: \"\"\""+prompt+'"""'}]
-        mutated_prompt = send_query2gpt(client, messages, tmp_function_template, temperature=random.random()/2+0.5)['mutated_prompt']
+        mutated_prompt = send_query2gpt(self.client, messages, tmp_function_template, temperature=random.random()/2+0.5)['mutated_prompt']
         return mutated_prompt
 
     def gpt_mix_and_match(self, template, additive, questions_list, correct_answers_list):
         example = "\n\n".join(['Question: """'+q+'"""\nIdeal Answer: """'+a+'"""' for q,a in zip(questions_list[:5], correct_answers_list[:5])])
         messages = [{"role": "system", "content": "You are a cross-over system as part of an over-all genetic algorithm. You are to ingrain segments of an additive prompt to that of a template/control prompt to create a healthier offspring.\n\n"+"Note: For this task the over-arching Problem Description is: "+self.problem_description+"\n\nExamples for context:"+example}, {"role": "user", "content": "Template Prompt: \"\"\""+template+'"""\n'+'"""Additive Prompt: """'+additive}]
-        child_prompt = send_query2gpt(client, messages, function_templates[3])['child_prompt']
+        child_prompt = send_query2gpt(self.client, messages, function_templates[3])['child_prompt']
         return child_prompt
 
     def mutate_prompts(self, prompts, mutation_rate=0.1):
