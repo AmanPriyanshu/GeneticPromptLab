@@ -9,6 +9,52 @@ GeneticPromptLab is a Python library designed to harness the power of genetic al
 
 This library specifically leverages Sentence Transformers for embedding generation and k-means clustering to sample minimal yet diverse data from training sets. This strategic sampling ensures efficient exploration and optimization of prompts over multiple generations.
 
+```mermaid
+graph TD;
+    A[Initialize OpenAI Client] --> B[Load Dataset Configuration]
+    B --> C[Setup QuestionsAnswersOptimizer]
+    C --> D[Run Genetic Algorithm]
+
+    subgraph Genetic Algorithm Process
+        D --> GA[Start Genetic Algorithm]
+        GA --> Init[Generate Initial Prompts]
+        Init --> FE1
+        
+        subgraph Fitness Evaluation
+            FE1[Current Population]
+            FE1 --> FE2[Evaluate Individual Fitness]
+            FE2 --> FE3[Calculate Average Fitness]
+        end
+
+        FE1 --> STP[Select Top Prompts]
+        STP --> Cross[Crossover]
+        subgraph Crossover Mechanism
+            Cross --> Cross1[Select Parent Prompts]
+            Cross1 --> Cross2[Apply Crossover Logic]
+            Cross2 --> Cross3[Generate Offspring Prompts]
+        end
+
+        Cross3 --> Mut[Mutation]
+        subgraph Mutation Mechanism
+            Mut --> Mut1[Select Prompts for Mutation]
+            Mut1 --> Mut2[Apply Mutation Logic]
+            Mut2 --> Mut3[Generate Mutated Prompts]
+        end
+
+        Mut3 --> Check[Check Convergence]
+        Check -- No --> FE1
+        Check -- Yes --> Finish[End Genetic Algorithm]
+    end
+
+    Finish --> Out[Output]
+
+    style D fill:#f9f,stroke:#333,stroke-width:4px
+    style Genetic Algorithm Process fill:#ccf,stroke:#333,stroke-width:2px
+    style Fitness Evaluation fill:#fdd,stroke:#333,stroke-width:2px
+    style Crossover Mechanism fill:#dfd,stroke:#333,stroke-width:2px
+    style Mutation Mechanism fill:#ddf,stroke:#333,stroke-width:2px
+```
+
 ## Features
 
 - **Genetic Algorithm Implementation**: Complete genetic algorithm cycle including initialization, fitness evaluation, selection, crossover, and mutation for prompt engineering.
