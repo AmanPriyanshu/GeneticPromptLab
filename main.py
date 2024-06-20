@@ -7,13 +7,14 @@ import numpy as np
 import json
 from openai import OpenAI
 import time
+from tqdm import tqdm
 from function_templates import function_templates
 
 with open("openai_api.key", "r") as f:
     key = f.read()
 client = OpenAI(api_key=key.strip())
 
-def send_query2gpt(client, messages, function_template, temperature=0):
+def send_query2gpt(client, messages, function_template, temperature=0, pause=5):
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=messages,
@@ -24,10 +25,12 @@ def send_query2gpt(client, messages, function_template, temperature=0):
     )
     answer = response.choices[0].message.function_call.arguments
     generated_response = json.loads(answer)
+    time.sleep(pause)
     return generated_response
 
 class GeneticPromptLab:
-    def __init__(self, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1):
+    def __init__(self, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1, generations=10):
+        self.generations = generations
         self.init_and_fitness_sample = init_and_fitness_sample
         self.test_questions_list = test_questions_list
         self.test_answers_label = test_answers_label
@@ -43,16 +46,15 @@ class GeneticPromptLab:
         self.embeddings = self.model.encode(self.train_questions_list, show_progress_bar=True)
         self.already_sampled_indices = set()
 
-    def create_prompts(self, data, time_wait=5):
+    def create_prompts(self, data):
         data_doubled = data+data
         prompts = []
         for i in range(len(data)):
             sample = data_doubled[i:i+self.window_size_init]
             sample_prompt = "\n".join(["Question: \"\"\""+s["q"]+"\"\"\"\nCorrect Label:\"\"\""+s["a"]+"\"\"\"" for s in sample])
-            messages = [{"role": "system", "content": function_templates[0]["description"]+"\n\nNote: For this task the labels are: "+"\n".join([str(k)+". "+str(v) for k,v in self.label_dict.items()])}, {"role": "user", "content": "Observe the following samples:\n\n"+sample_prompt}]
+            messages = [{"role": "system", "content": "Problem Description: "+self.problem_description+"\n\n"+function_templates[0]["description"]+"\n\nNote: For this task the labels are: "+"\n".join([str(k)+". "+str(v) for k,v in self.label_dict.items()])}, {"role": "user", "content": "Observe the following samples:\n\n"+sample_prompt}]
             prompt = send_query2gpt(client, messages, function_templates[0])['prompt']
             prompts.append(prompt)
-            time.sleep(time_wait)
         return prompts
 
     def generate_init_prompts(self):
@@ -88,25 +90,30 @@ class GeneticPromptLab:
         self.already_sampled_indices.update(sampled_indices)
         return sampled_indices
 
-    def genetic_algorithm(self, generations, mutation_rate=0.1):
+    def genetic_algorithm(self, mutation_rate=0.1):
         initial_prompts = self.generate_init_prompts()
         population = initial_prompts
-
-        for _ in range(generations):
-            fitness_scores = self.evaluate_fitness(population)
+        bar = tqdm(range(self.generations))
+        for gen_id in bar:
+            fitness_scores, questions_list, correct_answers_list = self.evaluate_fitness(population)
             top_prompts = self.select_top_prompts(fitness_scores, population)
-            new_prompts = self.crossover_using_gpt(top_prompts)
+            new_prompts = self.crossover_using_gpt(top_prompts, questions_list, correct_answers_list)
 
             num_random_prompts = int(population_size * 0.25)
             random_prompts = self.random_initialization(num_random_prompts)
 
             population = new_prompts + random_prompts
             population = self.mutate_prompts(population, mutation_rate)
+            bar.set_description(str({"epoch": gen_id+1, "acc": round(np.mean(fitness_scores)*100, 1)}))
+            bar.update()
+            print(population)
+        bar.close()
 
         return population
 
     def evaluate_fitness(self, prompts):
         distinct_sample_indices = self.sample_distinct(self.init_and_fitness_sample)
+        just_questions_list = [self.train_questions_list[int(index)] for index in distinct_sample_indices]
         questions_list = "\n\n".join([str(i+1)+'. """'+self.train_questions_list[int(index)]+'"""' for i,index in enumerate(distinct_sample_indices)])
         correct_answers_list = [self.label_dict[self.train_answers_label[int(i)]] for i in distinct_sample_indices]
         acc_list = []
@@ -121,7 +128,7 @@ class GeneticPromptLab:
             labels = [l['label'] for l in labels['label_array']]
             accuracy = sum(1 if a == b else 0 for a, b in zip(labels, correct_answers_list)) / len(labels)
             acc_list.append(accuracy)
-        return acc_list
+        return acc_list, just_questions_list, correct_answers_list
 
     def select_top_prompts(self, fitness_scores, population, top_fraction=0.5):
         paired_list = list(zip(population, fitness_scores))
@@ -129,7 +136,7 @@ class GeneticPromptLab:
         cutoff = int(len(sorted_prompts) * top_fraction)
         return [prompt for prompt, score in sorted_prompts[:cutoff]]
 
-    def crossover_using_gpt(self, prompts):
+    def crossover_using_gpt(self, prompts, questions_list, correct_answers_list):
         if len(prompts)<2:
             raise Exception("Too few to cross-over.")
         new_prompts = []
@@ -137,23 +144,25 @@ class GeneticPromptLab:
             if i + 1 < len(prompts):
                 template = prompts[i]
                 additive = prompts[i + 1]
-                if template==additive:
+                if template.lower().strip()==additive.lower().strip():
                     additive = self.gpt_mutate(additive)
-                new_prompt = self.gpt_mix_and_match(template, additive)
+                new_prompt = self.gpt_mix_and_match(template, additive, questions_list, correct_answers_list)
                 new_prompts.append(new_prompt)
         return new_prompts
     
     def gpt_mutate(self, prompt):
         tmp_function_template = function_templates[2]
         tmp_function_template["parameters"]["properties"]["mutated_prompt"]["description"] += str(round(random.random(), 3))
-        messages = [{"role": "system", "content": "You are a prompt-mutator as part of an over-all genetic algorithm. Mutate the following prompt while not detracting from the core-task but still rephrasing/mutating the prompt."}, {"role": "user", "content": "Modify the following prompt: \"\"\""+prompt+'"""'}]
-        mutated_prompt = send_query2gpt(client, messages, tmp_function_template, temperature=random.random()/2+0.5)
-        print(mutated_prompt)
+        messages = [{"role": "system", "content": "You are a prompt-mutator as part of an over-all genetic algorithm. Mutate the following prompt while not detracting from the core-task but still rephrasing/mutating the prompt.\n\n"+"Note: For this task the over-arching Problem Description is: "+self.problem_description}, {"role": "user", "content": "Modify the following prompt: \"\"\""+prompt+'"""'}]
+        mutated_prompt = send_query2gpt(client, messages, tmp_function_template, temperature=random.random()/2+0.5)['mutated_prompt']
+        print("Mutated:",mutated_prompt, prompt)
         return mutated_prompt
 
-    def gpt_mix_and_match(self, template, additive):
-        exit()
-        pass
+    def gpt_mix_and_match(self, template, additive, questions_list, correct_answers_list):
+        example = "\n\n".join(['Question: """'+q+'"""\nIdeal Answer: """'+a+'"""' for q,a in zip(questions_list[:5], correct_answers_list[:5])])
+        messages = [{"role": "system", "content": "You are a cross-over system as part of an over-all genetic algorithm. You are to ingrain segments of an additive prompt to that of a template/control prompt to create a healthier offspring.\n\n"+"Note: For this task the over-arching Problem Description is: "+self.problem_description+"\n\nExamples for context:"+example}, {"role": "user", "content": "Template Prompt: \"\"\""+template+'"""\n'+'"""Additive Prompt: """'+additive}]
+        child_prompt = send_query2gpt(client, messages, function_templates[3])['child_prompt']
+        return child_prompt
 
     def random_initialization(self, size):
         return [f"Random initialized prompt {_}" for _ in range(size)]

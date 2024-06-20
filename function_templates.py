@@ -53,5 +53,19 @@ function_templates = [
             },
             "required": ["mutated_prompt"]
         }
+    },
+    {
+        "name": "prompt_crossover",
+        "description": "You are part of Genetic-Optimization Algorithm whose objective is to create a child based on two prompts, specifically a Control Prompt and an Additive Prompt. Such that, a new prompt is created taking the Control Prompt as template to instert segments/important vehicles of the Additive Prompt. Ensure it still satisfies the problem description. Also, ensure the prompt is more detailed, it definitely underperformed which requires us to optimize further, there should be stronger directions and more complex instructions.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "child_prompt": {
+                    "type": "string",
+                    "description": "Re-Edit the template/control prompt to create a child prompt which is inspired by the additive prompt. It cannot be the same."
+                },
+            },
+            "required": ["child_prompt"]
+        }
     }
 ]
