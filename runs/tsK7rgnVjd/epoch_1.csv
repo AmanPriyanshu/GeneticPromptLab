@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+Predict the category of each news article based on its content.,1.0
+"Classify a news article into one of the categories: World, Sports, Business, or Sci/Tech.",1.0
+"Given an article from the news, categorize it into one of the following sections: World, Sports, Business, Sci/Tech.",1.0
+"Given an article from the news, forecast the article's category by analyzing its content. The categories comprise World, Sports, Business, and Sci/Tech.",1.0
+"Given a news article, determine its classification by analyzing the content. The classification options are World, Sports, Business, and Sci/Tech. Thoroughly examine the article to select the appropriate category. Take into account the context, keywords, and main theme of the article for an informed decision. Justify your choice with a detailed explanation, emphasizing crucial aspects that back your selection. Ensure the classification corresponds to the dataset's labels: World (0), Sports (1), Business (2), Sci/Tech (3).",1.0
+"Given an article on current events, anticipate the classification of the article by examining its content. The classifications encompass World, Sports, Business, and Sci/Tech. It is crucial to evaluate the context, keywords, and tone of the article for precise categorization. Take into account the worldwide influence, financial consequences, technological progress, and sporting activities to ascertain the suitable category. Offer a comprehensive rationale for why the article fits into the predicted category, substantiating your classification with pertinent details from the text.",1.0
+"Given an article from the news, categorize it into one of the following sections: World, Sports, Business, Sci/Tech.",1.0
+"Classify a news article into one of the provided categories: World, Sports, Business, Sci/Tech.",1.0

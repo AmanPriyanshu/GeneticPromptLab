@@ -15,7 +15,8 @@ warnings.filterwarnings("ignore", message="`resume_download` is deprecated and w
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 class GeneticPromptLab:
-    def __init__(self, client, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1, generations=10):
+    def __init__(self, client, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1, generations=10, num_retries=1):
+        self.num_retries = num_retries
         self.client = client
         self.generations = generations
         self.init_and_fitness_sample = init_and_fitness_sample
@@ -107,7 +108,6 @@ class GeneticPromptLab:
             population = top_prompts + new_prompts + random_prompts
             population = self.mutate_prompts(population, mutation_rate)
             bar.set_description(str({"epoch": gen_id+1, "acc": round(float(np.mean(fitness_scores))*100, 1)}))
-            bar.update()
         bar.close()
 
         return population
@@ -119,16 +119,19 @@ class GeneticPromptLab:
         correct_answers_list = [self.label_dict[self.train_answers_label[int(i)]] for i in distinct_sample_indices]
         acc_list = []
         for prompt in prompts:
-            messages = [{"role": "system", "content": prompt}, {"role": "user", "content": "Questions:\n\n"+questions_list+"\n\nNote: Ensure you respond with "+str(len(distinct_sample_indices))+" labels."}]
-            tmp_function_template = function_templates[1]
-            tmp_function_template["parameters"]["properties"]["label_array"]["items"]["properties"]["label"]["enum"] = [v for _,v in self.label_dict.items()]
-            tmp_function_template["parameters"]["properties"]["label_array"]["items"]["properties"]["label"]["description"] += str([v for _,v in self.label_dict.items()])
-            tmp_function_template["parameters"]["properties"]["label_array"]["minItems"] = len(distinct_sample_indices)
-            tmp_function_template["parameters"]["properties"]["label_array"]["maxItems"] = len(distinct_sample_indices)
-            labels = send_query2gpt(self.client, messages, tmp_function_template)
-            labels = [l['label'] for l in labels['label_array']]
-            accuracy = sum(1 if a == b else 0 for a, b in zip(labels, correct_answers_list)) / len(labels)
-            acc_list.append(accuracy)
+            acc = []
+            for retry_id in range(self.num_retries):
+                messages = [{"role": "system", "content": prompt}, {"role": "user", "content": "Questions:\n\n"+questions_list+"\n\nNote: Ensure you respond with "+str(len(distinct_sample_indices))+" labels."}]
+                tmp_function_template = function_templates[1]
+                tmp_function_template["parameters"]["properties"]["label_array"]["items"]["properties"]["label"]["enum"] = [v for _,v in self.label_dict.items()]
+                tmp_function_template["parameters"]["properties"]["label_array"]["items"]["properties"]["label"]["description"] += str([v for _,v in self.label_dict.items()])
+                tmp_function_template["parameters"]["properties"]["label_array"]["minItems"] = len(distinct_sample_indices)
+                tmp_function_template["parameters"]["properties"]["label_array"]["maxItems"] = len(distinct_sample_indices)
+                labels = send_query2gpt(self.client, messages, tmp_function_template)
+                labels = [l['label'] for l in labels['label_array']]
+                accuracy = sum(1 if a == b else 0 for a, b in zip(labels, correct_answers_list)) / len(labels)
+                acc.append(accuracy)
+            acc_list.append(sum(acc)/len(acc))
         return acc_list, just_questions_list, correct_answers_list
 
     def select_top_prompts(self, fitness_scores, population, top_fraction=0.5):

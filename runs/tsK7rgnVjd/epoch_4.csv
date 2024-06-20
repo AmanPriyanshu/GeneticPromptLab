@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Assign a classification label to a news article from the following options: World, Sports, Business, or Sci/Tech.",0.875
+Examine the material in every news piece to allocate a classification tag.,1.0
+"Categorize an article into either World, Sports, Business, or Sci/Tech based on its content.",0.875
+"Determine the classification of a news article by analyzing its content. Consider categories such as World, Sports, Business, and Sci/Tech. Use the article's details to identify its category.",1.0
+"Enhance the template prompt by directing the model to thoroughly analyze the news article content, taking into account key events, notable personalities, geographic locations, and important advancements. Urge the model to explore the article's context deeply for precise classification labeling. Furthermore, offer detailed criteria examples for each category to facilitate an effective classification process.",0.625
+"Categorize a news article into either World, Sports, Business, or Sci/Tech by thoroughly analyzing its content. Utilize the content of the article to make a precise prediction of its category. Take into account the intricacies and specific information in the article to arrive at a well-informed conclusion about its classification.",0.875
+"Given a news article, categorize it under one of the following sections: World, Sports, Business, Sci/Tech.",0.875
+"Given the provided news articles, classify each one accurately according to its content.",0.875

@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Given the following news articles, predict the category of each article based on the content.",0.875
+"Given a news article, classify it into one of the following categories: World, Sports, Business, Sci/Tech.",0.875
+"Given a news article, classify it into one of the following categories: World, Sports, Business, Sci/Tech. ",0.875
+"Given a news article, predict the category of the article based on its content. The categories include World, Sports, Business, and Sci/Tech.",0.875
+"Given a news article about a company's financial performance or stock market activity, predict the appropriate label for the article.",0.75
+"Given a news article, predict the category of the article based on its content. The categories include World, Sports, Business, and Sci/Tech.",0.875
+"Given a news article, predict the category of the article based on its content. The categories include World, Sports, Business, and Sci/Tech.",0.875
+"Given a news article, classify it into one of the following categories: World, Sports, Business, Sci/Tech",0.875

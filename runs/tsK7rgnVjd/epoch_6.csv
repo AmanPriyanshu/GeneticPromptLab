@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+Analyze every piece of information in every news article to assign a classification label.,0.625
+"Identify the classification of a news article through content examination. Consider categories such as World, Sports, Business, and Sci/Tech. Use the details of the article to determine its category.",0.75
+"Assign a category label to a news article from the given options: World, Sports, Business, or Sci/Tech.",0.75
+"Classify a news article into World, Sports, Business, or Sci/Tech according to its content.",0.875
+"Analyze the content of every news article meticulously to ascertain its classification label. Take into account classifications such as World, Sports, Business, and Sci/Tech. Use the information presented in the article to precisely allocate the correct category.",0.75
+"Improve the categorization process by examining the text of a news piece and allocating it to one of the specified groups: World, Sports, Business, or Sci/Tech. Take into account the context, main topics, and significance of the article to reach a well-informed conclusion regarding its classification.",0.625
+"Given an article from the news, forecast the classification of the article depending on its content. The classifications comprise of World, Sports, Business, and Sci/Tech.",0.875
+Predict the category of each news article based on its content.,0.875
