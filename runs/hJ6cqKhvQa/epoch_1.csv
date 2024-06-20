@@ -1,9 +1,0 @@
-Prompt,Fitness Score
-"Given the provided examples, create a prompt that assists the model in accurately categorizing the queries into the correct labels: World, Sports, Business, Sci/Tech",1.0
-Predict the classification of news articles by analyzing the content.,0.875
-"Predict the classification label of a news article by analyzing its content. The classification labels consist of World, Sports, Business, and Sci/Tech.",0.875
-"Given a news report, determine the classification of the report depending on its content. The classifications consist of World, Sports, Business, and Sci/Tech.",0.875
-"Given a varied selection of news articles from different sources, forecast the classification of each article based on its content. The classifications encompass World, Sports, Business, and Sci/Tech. Guarantee the model effectively sorts the articles into the appropriate category by examining the predominant themes and subjects addressed in each article.",0.875
-"Examine the content of a news article in depth to precisely identify the category it falls under. The classification options include World, Sports, Business, and Sci/Tech. Your objective is to meticulously evaluate the details presented in the article and assign the most fitting category based on the primary theme and subject matter. It is crucial that your categorization is accurate and captures the fundamental essence of the article's content.",0.875
-Create a prompt that assists the model in accurately categorizing the provided query based on the specified categories.,0.875
-"Predict the category (World, Sports, Business, Sci/Tech) of a news article by analyzing its content.",0.875

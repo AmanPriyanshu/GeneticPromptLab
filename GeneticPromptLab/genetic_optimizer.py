@@ -7,31 +7,12 @@ import numpy as np
 import json
 import os
 import string
-from openai import OpenAI
-import time
 from tqdm import tqdm
-from function_templates import function_templates
+from .utils import send_query2gpt
+from .function_templates import function_templates
 import warnings
 warnings.filterwarnings("ignore", message="`resume_download` is deprecated and will be removed in version 1.0.0.")
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
-
-with open("openai_api.key", "r") as f:
-    key = f.read()
-client = OpenAI(api_key=key.strip())
-
-def send_query2gpt(client, messages, function_template, temperature=0, pause=5):
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-        temperature=temperature,
-        max_tokens=512,
-        functions=[function_template], 
-        function_call={"name": function_template["name"]}
-    )
-    answer = response.choices[0].message.function_call.arguments
-    generated_response = json.loads(answer)
-    time.sleep(pause)
-    return generated_response
 
 class GeneticPromptLab:
     def __init__(self, client, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1, generations=10):
@@ -121,7 +102,7 @@ class GeneticPromptLab:
             print("Top Population:", top_prompts)
             print("\n\n")
             new_prompts = self.crossover_using_gpt(top_prompts, questions_list, correct_answers_list)
-            num_random_prompts = int(population_size * 0.25)
+            num_random_prompts = int(self.init_and_fitness_sample * 0.25)
             random_prompts = self.generate_init_prompts(num_random_prompts)
             population = top_prompts + new_prompts + random_prompts
             population = self.mutate_prompts(population, mutation_rate)
@@ -191,27 +172,3 @@ class GeneticPromptLab:
             else:
                 mutated_prompts.append(prompt)
         return mutated_prompts
-
-if __name__ == '__main__':
-    # Configuration
-    train_path = './data/ag_news_train.csv'
-    test_path = './data/ag_news_test.csv'
-    model_name = 'multi-qa-MiniLM-L6-cos-v1'
-    train_data = pd.read_csv(train_path)
-    test_data = pd.read_csv(test_path)
-    with open("./data/ag_news_label_dict.json", "r") as f:
-        label_dict = json.load(f)
-        label_dict = {i:v for i,v in enumerate(label_dict)}
-    problem_description = "AG is a collection of more than 1 million news articles. News articles have been gathered from more than 2000 news sources by ComeToMyHead in more than 1 year of activity. ComeToMyHead is an academic news search engine which has been running since July, 2004. The dataset is provided by the academic comunity for research purposes in data mining. Your objective is a classification label, with possible values including World (0), Sports (1), Business (2), Sci/Tech (3)."
-
-    train_questions_list, train_answers_label, test_questions_list, test_answers_label = train_data['question'].tolist(), train_data['label'].tolist(), test_data['question'].tolist(), test_data['label'].tolist()
-    # Create GeneticPromptLab instance
-
-    population_size = 8
-    generations = 10
-    sample_p = 0.01
-
-    lab = GeneticPromptLab(problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p, init_and_fitness_sample=population_size, window_size_init=2)
-    optimized_prompts = lab.genetic_algorithm(generations)
-
-    print("Optimized Prompts:", optimized_prompts)

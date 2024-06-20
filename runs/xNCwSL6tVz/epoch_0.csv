@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Given a news article, classify it into one of the following categories: World, Sports, Business, Sci/Tech.",0.5
+"Given a news article, predict the category (World, Sports, Business, Sci/Tech) based on the content.",0.5
+"Given the following news articles, can you classify the content into the appropriate category of World, Sports, Business, or Sci/Tech?",0.625
+"Given the following samples, what prompt would enable the model to correctly classify the questions into the provided labels?",0.25
+"Given a news article, predict the category of the article based on its content. Categories include World, Sports, Business, and Sci/Tech.",0.625
+"Given a news article, classify it into one of the following categories: World, Sports, Business, Sci/Tech.",0.5
+"Given a news article, predict the category of the article based on its content. The categories include World, Sports, Business, and Sci/Tech.",0.5
+"Given a news article, predict the category of the article based on its content. The categories include World, Sports, Business, and Sci/Tech.",0.625
