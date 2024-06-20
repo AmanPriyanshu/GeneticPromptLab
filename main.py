@@ -57,8 +57,10 @@ class GeneticPromptLab:
             prompts.append(prompt)
         return prompts
 
-    def generate_init_prompts(self):
-        distinct_sample_indices = self.sample_distinct(self.init_and_fitness_sample)
+    def generate_init_prompts(self, n=None):
+        if n is None:
+            n = self.init_and_fitness_sample
+        distinct_sample_indices = self.sample_distinct(n)
         data = []
         for sample_index in distinct_sample_indices:
             question = self.train_questions_list[int(sample_index)]
@@ -95,18 +97,16 @@ class GeneticPromptLab:
         population = initial_prompts
         bar = tqdm(range(self.generations))
         for gen_id in bar:
+            print(population)
             fitness_scores, questions_list, correct_answers_list = self.evaluate_fitness(population)
             top_prompts = self.select_top_prompts(fitness_scores, population)
             new_prompts = self.crossover_using_gpt(top_prompts, questions_list, correct_answers_list)
-
             num_random_prompts = int(population_size * 0.25)
-            random_prompts = self.random_initialization(num_random_prompts)
-
-            population = new_prompts + random_prompts
+            random_prompts = self.generate_init_prompts(num_random_prompts)
+            population = top_prompts + new_prompts + random_prompts
             population = self.mutate_prompts(population, mutation_rate)
-            bar.set_description(str({"epoch": gen_id+1, "acc": round(np.mean(fitness_scores)*100, 1)}))
+            bar.set_description(str({"epoch": gen_id+1, "acc": round(float(np.mean(fitness_scores))*100, 1)}))
             bar.update()
-            print(population)
         bar.close()
 
         return population
@@ -155,7 +155,6 @@ class GeneticPromptLab:
         tmp_function_template["parameters"]["properties"]["mutated_prompt"]["description"] += str(round(random.random(), 3))
         messages = [{"role": "system", "content": "You are a prompt-mutator as part of an over-all genetic algorithm. Mutate the following prompt while not detracting from the core-task but still rephrasing/mutating the prompt.\n\n"+"Note: For this task the over-arching Problem Description is: "+self.problem_description}, {"role": "user", "content": "Modify the following prompt: \"\"\""+prompt+'"""'}]
         mutated_prompt = send_query2gpt(client, messages, tmp_function_template, temperature=random.random()/2+0.5)['mutated_prompt']
-        print("Mutated:",mutated_prompt, prompt)
         return mutated_prompt
 
     def gpt_mix_and_match(self, template, additive, questions_list, correct_answers_list):
@@ -163,9 +162,6 @@ class GeneticPromptLab:
         messages = [{"role": "system", "content": "You are a cross-over system as part of an over-all genetic algorithm. You are to ingrain segments of an additive prompt to that of a template/control prompt to create a healthier offspring.\n\n"+"Note: For this task the over-arching Problem Description is: "+self.problem_description+"\n\nExamples for context:"+example}, {"role": "user", "content": "Template Prompt: \"\"\""+template+'"""\n'+'"""Additive Prompt: """'+additive}]
         child_prompt = send_query2gpt(client, messages, function_templates[3])['child_prompt']
         return child_prompt
-
-    def random_initialization(self, size):
-        return [f"Random initialized prompt {_}" for _ in range(size)]
 
     def mutate_prompts(self, prompts, mutation_rate=0.1):
         mutated_prompts = []

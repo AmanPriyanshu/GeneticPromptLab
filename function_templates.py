@@ -42,7 +42,7 @@ function_templates = [
     },
     {
         "name": "prompt_mutate",
-        "description": "You are part of Genetic-Optimization Algorithm whose objective is mutate a prompt to ensure randomess within the given prompt. Observe the problem description and make modifications to the original prompt.",
+        "description": "You are part of Genetic-Optimization Algorithm whose objective is mutate a prompt to ensure randomess within the given prompt yet it should be a direct derivative of the original. Observe the problem description and make modifications to the original prompt.",
         "parameters": {
             "type": "object",
             "properties": {
