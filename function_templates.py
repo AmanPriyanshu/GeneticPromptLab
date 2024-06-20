@@ -1,7 +1,7 @@
 function_templates = [
     {
         "name": "generate_prompts",
-        "description": "You are a Prompt-Engineering assistant whose objective is to understand the given task and come up with a prompt which enables the model to answer these questions accurately.\n\nNote: Questions will change but the prompt you give will be added as a pre-fix to all questions.\n\nUnderstand that the prompt should be generalized to the problem description and can be generalized across all classes. Ensure you do not entirely regurgitate the prompt but be more specific in cases where you feel an LLM might be confused/incorrect as simple prompts don't give the best results.",
+        "description": "You are a Prompt-Engineering assistant whose objective is to understand the given task and come up with a prompt which enables the model to answer these questions accurately.\n\nNote: Questions will change but the prompt you give will be added as a pre-fix to all questions.\n\nUnderstand that the prompt should be generalized to the problem description and can be generalized across all classes. However, understand you're also a part of a genetic algorithm creating a random set of prompts, which is why the current examples must inspire some perturbations to a generlized prompt, because general prompts simply describing the task are inaccurate. Ensure you do not entirely regurgitate a question-answer pair but be more specific in cases where you feel an LLM might be confused/incorrect as simple prompts don't give the best results.",
         "parameters": {
             "type": "object",
             "properties": {

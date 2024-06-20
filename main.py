@@ -97,9 +97,12 @@ class GeneticPromptLab:
         population = initial_prompts
         bar = tqdm(range(self.generations))
         for gen_id in bar:
-            print(population)
+            print("Complete Population:",population)
             fitness_scores, questions_list, correct_answers_list = self.evaluate_fitness(population)
             top_prompts = self.select_top_prompts(fitness_scores, population)
+            print()
+            print("Top Population:", top_prompts)
+            print("\n\n")
             new_prompts = self.crossover_using_gpt(top_prompts, questions_list, correct_answers_list)
             num_random_prompts = int(population_size * 0.25)
             random_prompts = self.generate_init_prompts(num_random_prompts)
@@ -187,11 +190,11 @@ if __name__ == '__main__':
     train_questions_list, train_answers_label, test_questions_list, test_answers_label = train_data['question'].tolist(), train_data['label'].tolist(), test_data['question'].tolist(), test_data['label'].tolist()
     # Create GeneticPromptLab instance
 
-    population_size = 4
+    population_size = 8
     generations = 10
     sample_p = 0.01
 
-    lab = GeneticPromptLab(problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p, init_and_fitness_sample=population_size)
+    lab = GeneticPromptLab(problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p, init_and_fitness_sample=population_size, window_size_init=2)
     optimized_prompts = lab.genetic_algorithm(generations)
 
     print("Optimized Prompts:", optimized_prompts)
