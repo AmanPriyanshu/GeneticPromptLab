@@ -27,6 +27,20 @@ cd GeneticPromptLab
 pip install -r requirements.txt
 ```
 
+## Benchmarks
+
+### Performance on TREC Dataset
+
+The TREC dataset comprises 4,500 English questions categorized into various labels. Below is the performance improvement graph showing the evolution of prompt effectiveness over 10 generations.
+
+![Performance on TREC Dataset](/images/TREC.png)
+
+### Performance on AG News Dataset
+
+The AG News dataset contains over 1 million news articles classified into categories like World, Sports, Business, and Sci/Tech. Below is the performance graph for the AG News dataset.
+
+![Performance on AG News Dataset](/images/Agnews.png)
+
 ## Quick Start
 
 To run GeneticPromptLab on the AG News dataset:
@@ -61,20 +75,55 @@ lab = QuestionsAnswersOptimizer(
 optimized_prompts = lab.genetic_algorithm()
 print(optimized_prompts)
 ```
+### Detailed Explanation of Arguments:
 
-## Benchmarks
+#### 1. `client`
+- **Description**: This is the instance of the OpenAI client that the optimizer uses to send queries. It's essential for communicating with the GPT model.
+- **Example Usage**: `client = OpenAI(api_key=key)`
 
-### Performance on TREC Dataset
+#### 2. `problem_description`
+- **Description**: A string that describes the problem context or dataset. This helps to set the stage for the prompts, providing the GPT model with a background for better understanding and response generation.
+- **Example Usage**: Derived from the `agnews()` function which returns a detailed description of the AG News dataset.
 
-The TREC dataset comprises 4,500 English questions categorized into various labels. Below is the performance improvement graph showing the evolution of prompt effectiveness over 10 generations.
+#### 3. `train_questions_list`
+- **Description**: A list of questions from the training dataset. These are used by the genetic algorithm to generate initial prompts and evaluate their effectiveness.
+- **Example Usage**: List of questions derived from the `train_data['question'].tolist()` method in the `agnews()` function.
 
-![Performance on TREC Dataset](/images/TREC.png)
+#### 4. `train_answers_label`
+- **Description**: A list of corresponding labels for the training questions. These are crucial for training as they provide the correct answers for the questions.
+- **Example Usage**: List of labels derived from the `train_data['label'].tolist()` method in the `agnews()` function.
 
-### Performance on AG News Dataset
+#### 5. `test_questions_list`
+- **Description**: A list of questions from the testing dataset. While primarily not used directly in training, they can be useful for additional validation if incorporated.
+- **Example Usage**: Similar to `train_questions_list`, but derived from the test data.
 
-The AG News dataset contains over 1 million news articles classified into categories like World, Sports, Business, and Sci/Tech. Below is the performance graph for the AG News dataset.
+#### 6. `test_answers_label`
+- **Description**: Corresponding labels for the test questions. These are used to validate the effectiveness of the prompts on unseen data.
+- **Example Usage**: Similar to `train_answers_label`, but for test data.
 
-![Performance on AG News Dataset](/images/Agnews.png)
+#### 7. `label_dict`
+- **Description**: A dictionary mapping numerical labels to their descriptive counterparts. It helps in understanding and converting between numerical labels and their meaning.
+- **Example Usage**: Loaded from a JSON file in the `agnews()` function.
+
+#### 8. `model_name`
+- **Description**: The name of the SentenceTransformer model used for encoding the questions into embeddings. The choice of model can significantly affect the clustering and thus the genetic algorithm's ability to sample distinct data points.
+- **Example Usage**: `'multi-qa-MiniLM-L6-cos-v1'` as specified in the `agnews()` function.
+
+#### 9. `sample_p`
+- **Description**: The proportion of the training dataset to sample for running the genetic algorithm. A smaller sample can be used to speed up computations during development or in cases of limited computational resources.
+- **Example Usage**: `0.01` means that 1% of the training data is used.
+
+#### 10. `init_and_fitness_sample`
+- **Description**: The initial number of prompts to generate and also the number of prompts evaluated for fitness each generation. This setting controls the breadth of exploration in the genetic space.
+- **Example Usage**: `8` initializes and evaluates eight prompts per generation.
+
+#### 11. `window_size_init`
+- **Description**: This parameter controls the number of questions considered for creating a single prompt. It can affect the complexity and specificity of the generated prompts.
+- **Example Usage**: `2` means that two questions are combined to create each prompt.
+
+#### 12. `num_retries`
+- **Description**: Specifies how many times the fitness of each prompt should be re-evaluated to ensure accuracy. This is important because the stochastic nature of GPT responses can lead to variability in performance.
+- **Example Usage**: `2` retries for each prompt to average out the variability.
 
 ## Documentation
 
