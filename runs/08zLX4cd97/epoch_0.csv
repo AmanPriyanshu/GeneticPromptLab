@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Provide a prompt that enables the model to accurately classify questions into the given labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.375
+"Classify the given questions into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.25
+"Classify the given questions into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.375
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.375
+"Write a prompt that helps the model classify questions into the given labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.375
+"Classify the given questions into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.125
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.375
+"Provide a prompt that helps the model classify questions into the given labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.375

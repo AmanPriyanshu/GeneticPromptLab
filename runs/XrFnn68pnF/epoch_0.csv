@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Considering the abundance of news articles at hand, determine the appropriate classification for each article:",0.625
+"Examine the content of a news article to determine its classification. The potential categories are World, Sports, Business, and Sci/Tech.",0.625
+"Classify the classification (World, Sports, Business, Sci/Tech) of a news article through content inspection.",0.625
+"Suggest a new set of guidelines to help the model accurately classify news articles into their respective categories: World, Sports, Business, Sci/Tech, based on the provided examples.",0.625
+"Given the vast array of news articles available, identify the suitable classification for each article by carefully examining its content. The classifications include World, Sports, Business, and Sci/Tech. Ensure to explore the core of the news piece for precise categorization.",0.75
+"Revamp the current categorization framework by incorporating a fresh set of criteria to precisely categorize news articles into specific sections like Global, Sports, Commerce, and Science/Technology inspired by the given instances.",0.625
+"Given the data from news sources, forecast the classification of the article according to its content. The classifications consist of World, Sports, Business, and Sci/Tech.",0.625
+"Based on the content of a news article, make a prediction on the category of the article. Possible categories are World, Sports, Business, and Sci/Tech.",0.625

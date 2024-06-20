@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Identify the appropriate classification for the news article by assigning it to one of the specified categories: World, Sports, Business, Sci/Tech. Utilize the provided data to ensure accurate categorization.",0.75
+"Assign a news story to a specific category: World, Sports, Business, Sci/Tech. ",0.75
+"Determine the classification (World, Sports, Business, Sci/Tech) of a news article through content analysis.",0.8125
+"Generate a new instruction to assist the model in precisely categorizing queries into their respective categories: World, Sports, Business, Sci/Tech, utilizing the given examples.",0.875
+"Identify the suitable classification for a news article by categorizing it into one of the predefined groups: World, Sports, Business, or Sci/Tech. Utilize the provided details to guarantee precise and comprehensive labeling. Take into account the article's context and content to formulate an educated choice concerning its categorization.",0.75
+"Determine the classification (World, Sports, Business, Sci/Tech) of a news article through content analysis. Create a detailed set of rules and standards to aid the model in accurately classifying news articles into their respective categories: World, Sports, Business, Sci/Tech, utilizing the given instances and situations.",0.75
+"Given the news articles provided, determine the appropriate label for each article:",0.875
+"Given a news article, determine the classification of the article by analyzing its content. The classifications consist of World, Sports, Business, and Sci/Tech.",0.875

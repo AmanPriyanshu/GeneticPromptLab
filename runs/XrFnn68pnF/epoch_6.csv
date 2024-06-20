@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Generate a prompt based on the provided examples to help the model accurately categorize the queries into the correct classes: World, Sports, Business, Sci/Tech",0.875
+"Identify the category (World, Sports, Business, Sci/Tech) of a news article using content examination.",0.9375
+"Given the provided examples, how can guidance assist an LLM in efficiently classifying the queries into the correct categories?",0.875
+"Given the samples given, what kind of investigation would assist an LLM in accurately categorizing the query based on the specified classes?",0.8125
+"Given the news article's content, categorize it into one of the provided classifications: World, Sports, Business, Sci/Tech. Utilize the content to accurately assign a category.",1.0
+"Given the provided instances, what form of investigation would aid an LLM in precisely classifying the queries into their corresponding categories?",0.875
+"Given the provided examples, what prompt should be used to assist an LLM in accurately categorizing the question into the specified labels?",0.75
+"Given a news piece, categorize it into one of the following sections: World, Sports, Business, Sci/Tech.",1.0

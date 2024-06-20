@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Considering the extensive range of news articles accessible, determine the appropriate classification for each article by thoroughly analyzing its content. The classification options consist of World, Sports, Business, and Sci/Tech. Be sure to delve into the essence of the news article for accurate categorization.",0.625
+"Given the vast number of news articles available, identify the suitable classification for each article:",0.625
+"Analyze the material within a news article to ascertain its categorization. The potential classifications include World, Sports, Business, and Sci/Tech.",0.75
+"Determine the category (World, Sports, Business, Sci/Tech) of a news article through analyzing its content.",0.6875
+"Given the myriad of news articles available, ascertain the suitable classification for each article through comprehensive examination of its content. The categories include World, Sports, Business, and Sci/Tech. Dive deep into the core of the news item for precise categorization.",0.625
+"Analyze the information within a news article to categorize it under one of the available classifications: World, Sports, Business, or Sci/Tech. Evaluate the data presented in the article for precise classification.",0.625
+"Given the provided news articles, classify each article into a category based on its content. The available categories are World, Sports, Business, and Sci/Tech.",0.625
+"Predict the classification of a news article by analyzing its content. The possible classifications are World, Sports, Business, and Sci/Tech.",0.625

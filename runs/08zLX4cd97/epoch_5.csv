@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Offer a prompt that empowers the model to precisely categorize questions into the specified labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.625
+"Categorize the provided queries into one of the following categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.625
+"Determine the appropriate category for each question from the options: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.8125
+"Write a new query to assist the model in categorizing inquiries into the specified categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.875
+"Revise the prompt to assist the model in effectively categorizing a group of English queries into the given categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}. Ensure the questions are assessed and sorted according to their content and context to assign the correct label.",0.625
+"Provide a thorough categorization for a given query by assigning it to one of the subsequent categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}. Guarantee the classification is precise and tailored to the question's content.",0.75
+"Given a query, categorize it into one of the following categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.625
+"Classify the provided queries into one of the specified categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75

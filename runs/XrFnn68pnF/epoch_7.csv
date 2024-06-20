@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Given the provided samples, create a prompt that allows the model to accurately categorize the questions into the correct categories: World, Sports, Business, Sci/Tech",1.0
+"Predict the category (World, Sports, Business, Sci/Tech) of a news article by analyzing its content.",1.0
+"With the provided examples, what instruction would assist an LLM in accurately categorizing the queries into their respective labels?",1.0
+"With the provided samples, what kind of prompt would assist an LLM in accurately categorizing the question based on the specified labels?",1.0
+"Given an article from the news, forecast the category (World, Sports, Business, Sci/Tech) based on its content. Examine the main themes, keywords, and context for precise article classification. Take into account the worldwide influence, sporting activities, business progressions, and scientific/technological innovations to reach an educated classification verdict. Offer thorough justifications for your classification to enrich the model's comprehension of the content.",1.0
+"Based on the provided examples, what prompt would assist an LLM in accurately categorizing the question into the specified labels?",1.0
+"Predict the category (World, Sports, Business, Sci/Tech) of a news article by analyzing its content.",1.0
+"Predict the classification label of a news article by analyzing its content. The classification labels consist of World, Sports, Business, and Sci/Tech.",1.0

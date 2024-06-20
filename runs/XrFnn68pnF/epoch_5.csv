@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Given the available examples, generate a prompt enabling the model to precisely classify the inquiries into the appropriate categories: World, Sports, Business, Sci/Tech",0.875
+"Determine the classification (World, Sports, Business, Sci/Tech) of a news article through content analysis.",0.875
+"With the examples given, what guidance can help an LLM in effectively categorizing the queries into their appropriate labels?",0.875
+"Given the examples provided, what type of inquiry would aid an LLM in precisely classifying the query according to the designated categories?",0.875
+"Develop a prompt based on the samples given, allowing the model to classify news articles accurately into the categories of World, Sports, Business, and Sci/Tech by analyzing their content thoroughly.",0.875
+"Given the examples provided, what type of prompt could support an LLM in effectively classifying the query according to the designated categories?",0.8125
+"Given the provided examples, create a prompt that allows the model to accurately categorize the queries into the specified classifications.",0.875
+"Based on these examples, create a prompt that allows the model to accurately categorize the queries into the specified classes.",0.875

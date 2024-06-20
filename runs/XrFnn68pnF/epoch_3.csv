@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Create a fresh directive to aid the model in accurately sorting inquiries into their corresponding categories: World, Sports, Business, Sci/Tech, using the provided instances.",0.5625
+"Given the vast array of news articles available, identify the suitable classification for each article:",0.75
+"Given a news piece, ascertain the categorization of the piece by scrutinizing its content. The categories include Global, Athletics, Commerce, and Science/Technology.",0.75
+"Determine the categorization (World, Sports, Business, Sci/Tech) of a news article via content examination.",0.75
+"Propose a fresh collection of rules to assist the model in precisely categorizing news articles into their designated groups: World, Sports, Business, Sci/Tech, according to the given instances.",0.75
+"Analyze the content of a news article to classify it as World, Sports, Business, or Sci/Tech. Utilize content analysis for precise identification of the news article's category.",0.75
+"Given an article from the news, categorize it into one of the following sections: World, Sports, Business, Sci/Tech.",0.75
+"Given the provided news articles, classify each article accurately based on its content.",0.75

@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Determine the suitable category for the news article by placing it into one of the designated groups: World, Sports, Business, Sci/Tech. Utilize the information available to ensure precise classification.",1.0
+"Categorize a news article into one of the given categories: World, Sports, Business, Sci/Tech.",1.0
+"Identify the category (World, Sports, Business, Sci/Tech) of a news article using content examination.",1.0
+"Generate a fresh directive to aid the model in accurately categorizing inquiries into their appropriate categories: World, Sports, Business, Sci/Tech, using the provided illustrations.",1.0
+"Identify the appropriate classification for the news article by categorizing it into one of the specified groups: World, Sports, Business, Sci/Tech. Make use of the provided details to ensure an accurate categorization.",1.0
+"Enhance the current classification system by integrating cutting-edge natural language processing methods for precise sorting of news articles into the designated categories: World, Sports, Business, Sci/Tech. Leverage contextual hints, sentiment evaluation, and entity identification for enhanced classification precision. Look at the given instances to assist in honing the model's decision-making procedure.",1.0
+"Given a news article, classify the topic of the article based on its content. Topics may vary including World, Sports, Business, and Sci/Tech.",1.0
+"Given a news article, categorize it into one of the options: World, Sports, Business, Sci/Tech.",1.0

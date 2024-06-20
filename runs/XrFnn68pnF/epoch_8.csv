@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Given the following samples, provide a prompt that enables the model to correctly classify the questions into the appropriate categories: World, Sports, Business, Sci/Tech",1.0
+"Given a news article, predict the category (World, Sports, Business, Sci/Tech) based on the content.",1.0
+"Given the following samples, what prompt would help an LLM correctly classify the questions into the appropriate labels?",1.0
+"Given the following samples, what prompt would help an LLM correctly classify the given question for the given labels?",1.0
+"Given a news article, classify it into one of the following categories: World, Sports, Business, Sci/Tech.",1.0
+"Given the following news articles, predict the category of each article based on the content.",0.875
+"Given the following news articles, predict the category of each article based on the content.",1.0
+"Given a news article, classify it into one of the following categories: World, Sports, Business, Sci/Tech.",1.0
