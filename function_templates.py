@@ -12,5 +12,32 @@ function_templates = [
             },
             "required": ["prompt"]
         }
+    },
+    {
+        "name": "QnA_bot",
+        "description": "You are a Question-Answering bot, that chooses the correct label for classification given a question.\nNote: Try to select from the given options.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "label_array": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "label": {
+                                "description": "Most correct label based on the given queries and instructions in the same order provided. Labels allowed: ",
+                                "type": "string",
+                                "enum": []
+                            },
+                        },
+                        "required": ["label"],
+                    },
+                    "description": "An array of labels.",
+                    "minItems": 0,
+                    "maxItems": 0,
+                }
+            },
+            "required": ["label_array"]
+        }
     }
 ]

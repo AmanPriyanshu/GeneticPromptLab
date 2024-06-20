@@ -6,6 +6,7 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import json
 from openai import OpenAI
+import time
 from function_templates import function_templates
 
 with open("openai_api.key", "r") as f:
@@ -42,25 +43,26 @@ class GeneticPromptLab:
         self.embeddings = self.model.encode(self.train_questions_list, show_progress_bar=True)
         self.already_sampled_indices = set()
 
-    def create_prompts(self, data):
+    def create_prompts(self, data, time_wait=5):
         data_doubled = data+data
-        batched_messages = []
+        prompts = []
         for i in range(len(data)):
             sample = data_doubled[i:i+self.window_size_init]
             sample_prompt = "\n".join(["Question: \"\"\""+s["q"]+"\"\"\"\nCorrect Label:\"\"\""+s["a"]+"\"\"\"" for s in sample])
             messages = [{"role": "system", "content": function_templates[0]["description"]+"\n\nNote: For this task the labels are: "+"\n".join([str(k)+". "+str(v) for k,v in self.label_dict.items()])}, {"role": "user", "content": "Observe the following samples:\n\n"+sample_prompt}]
-            batched_messages.append(messages)
-        return batched_messages
+            prompt = send_query2gpt(client, messages, function_templates[0])['prompt']
+            prompts.append(prompt)
+            time.sleep(time_wait)
+        return prompts
 
     def generate_init_prompts(self):
-        distinct_samples = self.sample_distinct(self.init_and_fitness_sample)
+        distinct_sample_indices = self.sample_distinct(self.init_and_fitness_sample)
         data = []
-        for sample_index in distinct_samples:
+        for sample_index in distinct_sample_indices:
             question = self.train_questions_list[int(sample_index)]
             answer = self.train_answers_label[int(sample_index)]
             data.append({"q": question, "a": self.label_dict[answer]})
         prompts = self.create_prompts(data)
-        
         return prompts
 
     def sample_distinct(self, n):
@@ -105,7 +107,21 @@ class GeneticPromptLab:
         return population
 
     def evaluate_fitness(self, prompts):
-        return {prompt: random.uniform(0, 1) for prompt in prompts}
+        distinct_sample_indices = self.sample_distinct(self.init_and_fitness_sample)
+        questions_list = "\n\n".join([str(i+1)+'. """'+self.train_questions_list[int(index)]+'"""' for i,index in enumerate(distinct_sample_indices)])
+        correct_answers_list = [self.train_answers_label[int(i)] for i in distinct_sample_indices]
+        for prompt in prompts:
+            messages = [{"role": "system", "content": prompt}, {"role": "user", "content": "Questions:\n\n"+questions_list+"\n\nNote: Ensure you respond with "+str(len(distinct_sample_indices))+" labels."}]
+            tmp_function_template = function_templates[1]
+            tmp_function_template["parameters"]["properties"]["label_array"]["items"]["properties"]["label"]["enum"] = [v for _,v in self.label_dict.items()]
+            tmp_function_template["parameters"]["properties"]["label_array"]["items"]["properties"]["label"]["description"] += str([v for _,v in self.label_dict.items()])
+            tmp_function_template["parameters"]["properties"]["label_array"]["minItems"] = len(distinct_sample_indices)
+            tmp_function_template["parameters"]["properties"]["label_array"]["maxItems"] = len(distinct_sample_indices)
+            labels = send_query2gpt(client, messages, tmp_function_template)
+            labels = [l['label'] for l in labels['label_array']]
+            print(labels)
+            print(correct_answers_list)
+            exit()
 
     def select_top_prompts(self, fitness_scores, top_fraction=0.5):
         sorted_prompts = sorted(fitness_scores, key=fitness_scores.get, reverse=True)
@@ -149,7 +165,7 @@ if __name__ == '__main__':
     train_questions_list, train_answers_label, test_questions_list, test_answers_label = train_data['question'].tolist(), train_data['label'].tolist(), test_data['question'].tolist(), test_data['label'].tolist()
     # Create GeneticPromptLab instance
 
-    population_size = 10
+    population_size = 2
     generations = 10
     sample_p = 0.01
 
