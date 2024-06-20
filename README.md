@@ -76,13 +76,15 @@ pip install -r requirements.txt
 ### Performance on TREC Dataset
 
 The TREC dataset comprises 4,500 English questions categorized into various labels. Below is the performance improvement graph showing the evolution of prompt effectiveness over 10 generations.
-
+#### Training Progression exploring only 10% of the training data
 ![Performance on TREC Dataset](/images/TREC.png)
+
+#### Best Prompt within 10 generations (100 samples explored) achieves 76.1% accuracy on test-set.
 
 ### Performance on AG News Dataset
 
 The AG News dataset contains over 1 million news articles classified into categories like World, Sports, Business, and Sci/Tech. Below is the performance graph for the AG News dataset.
-
+#### Training Progression exploring only 10% of the training data
 ![Performance on AG News Dataset](/images/Agnews.png)
 
 ## Quick Start
