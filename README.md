@@ -1,11 +1,9 @@
 # GeneticPromptLab
-GeneticPromptLab uses genetic algorithms for prompt engineering, enhancing quality and diversity through iterative selection, crossover, and mutation, while efficiently exploring minimal yet diverse samples from the training set.
-
-# README.md for GeneticPromptLab
+GeneticPromptLab uses genetic algorithms for automated prompt engineering (for LLMs), enhancing quality and diversity through iterative selection, crossover, and mutation, while efficiently exploring minimal yet diverse samples from the training set.
 
 ## Overview
 
-GeneticPromptLab is a Python library designed to harness the power of genetic algorithms for prompt engineering in NLP tasks. By iteratively applying selection, crossover, and mutation processes, GeneticPromptLab enhances the quality and diversity of prompts, leading to improved performance in automated question-answering and classification tasks.
+GeneticPromptLab is a Python library designed to harness the power of genetic algorithms for automated prompt engineering for large language models (LLMs). By iteratively applying selection, crossover, and mutation processes, GeneticPromptLab enhances the quality and diversity of prompts, leading to improved performance in automated question-answering and classification tasks.
 
 This library specifically leverages Sentence Transformers for embedding generation and k-means clustering to sample minimal yet diverse data from training sets. This strategic sampling ensures efficient exploration and optimization of prompts over multiple generations.
 
