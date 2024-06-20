@@ -1,7 +1,7 @@
 from openai import OpenAI
 import pandas as pd
 import json
-from GeneticPromptLab import GeneticPromptLab
+from GeneticPromptLab import QuestionsAnswersOptimizer
 
 with open("openai_api.key", "r") as f:
     key = f.read()
@@ -47,7 +47,7 @@ def main():
     sample_p = 0.01
     num_retries = 2
 
-    lab = GeneticPromptLab(
+    lab = QuestionsAnswersOptimizer(
         client=client, 
         problem_description=problem_description, 
         train_questions_list=train_questions_list, 
@@ -71,7 +71,7 @@ def main():
     num_retries = 2
 
 
-    lab = GeneticPromptLab(
+    lab = QuestionsAnswersOptimizer(
         client=client, 
         problem_description=problem_description, 
         train_questions_list=train_questions_list, 

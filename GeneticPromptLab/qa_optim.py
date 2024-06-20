@@ -4,17 +4,17 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances_argmin_min
 from sentence_transformers import SentenceTransformer
 import numpy as np
-import json
 import os
 import string
 from tqdm import tqdm
 from .utils import send_query2gpt
 from .function_templates import function_templates
 import warnings
+from .base_class import GeneticPromptLab
 warnings.filterwarnings("ignore", message="`resume_download` is deprecated and will be removed in version 1.0.0.")
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-class GeneticPromptLab:
+class QuestionsAnswersOptimizer(GeneticPromptLab):
     def __init__(self, client, problem_description, train_questions_list, train_answers_label, test_questions_list, test_answers_label, label_dict, model_name, sample_p=1.0, init_and_fitness_sample=10, window_size_init=1, generations=10, num_retries=1):
         self.num_retries = num_retries
         self.client = client
@@ -92,8 +92,8 @@ class GeneticPromptLab:
         bar = tqdm(range(self.generations))
         for gen_id in bar:
             print("Complete Population:",population)
-            fitness_scores, questions_list, correct_answers_list = self.evaluate_fitness(population)
-            top_prompts = self.select_top_prompts(fitness_scores, population)
+            fitness_scores, questions_list, correct_answers_list, prompt_answers_list = self.evaluate_fitness(population)
+            top_prompts, top_prompts_answers_list = self.select_top_prompts(fitness_scores, population, prompt_answers_list)
             df = pd.DataFrame({
                 'Prompt': population,
                 'Fitness Score': fitness_scores
@@ -102,7 +102,7 @@ class GeneticPromptLab:
             print()
             print("Top Population:", top_prompts)
             print("\n\n")
-            new_prompts = self.crossover_using_gpt(top_prompts, questions_list, correct_answers_list)
+            new_prompts = self.crossover_using_gpt(top_prompts, questions_list, correct_answers_list, top_prompts_answers_list)
             num_random_prompts = int(self.init_and_fitness_sample * 0.25)
             random_prompts = self.generate_init_prompts(num_random_prompts)
             population = top_prompts + new_prompts + random_prompts
@@ -118,6 +118,7 @@ class GeneticPromptLab:
         questions_list = "\n\n".join([str(i+1)+'. """'+self.train_questions_list[int(index)]+'"""' for i,index in enumerate(distinct_sample_indices)])
         correct_answers_list = [self.label_dict[self.train_answers_label[int(i)]] for i in distinct_sample_indices]
         acc_list = []
+        prompt_latest_answers_list = []
         for prompt in prompts:
             acc = []
             for retry_id in range(self.num_retries):
@@ -131,16 +132,17 @@ class GeneticPromptLab:
                 labels = [l['label'] for l in labels['label_array']]
                 accuracy = sum(1 if a == b else 0 for a, b in zip(labels, correct_answers_list)) / len(labels)
                 acc.append(accuracy)
+                prompt_latest_answers_list.append(labels)
             acc_list.append(sum(acc)/len(acc))
-        return acc_list, just_questions_list, correct_answers_list
+        return acc_list, just_questions_list, correct_answers_list, prompt_latest_answers_list
 
-    def select_top_prompts(self, fitness_scores, population, top_fraction=0.5):
-        paired_list = list(zip(population, fitness_scores))
+    def select_top_prompts(self, fitness_scores, population, prompt_answers_list, top_fraction=0.5):
+        paired_list = list(zip(population, fitness_scores, prompt_answers_list))
         sorted_prompts = sorted(paired_list, key=lambda x: x[1], reverse=True)
         cutoff = int(len(sorted_prompts) * top_fraction)
-        return [prompt for prompt, score in sorted_prompts[:cutoff]]
+        return [prompt for prompt, score, answers_list in sorted_prompts[:cutoff]], [answers_list for prompt, score, answers_list in sorted_prompts[:cutoff]]
 
-    def crossover_using_gpt(self, prompts, questions_list, correct_answers_list):
+    def crossover_using_gpt(self, prompts, questions_list, correct_answers_list, top_prompts_answers_list):
         if len(prompts)<2:
             raise Exception("Too few to cross-over.")
         new_prompts = []
@@ -148,9 +150,10 @@ class GeneticPromptLab:
             if i + 1 < len(prompts):
                 template = prompts[i]
                 additive = prompts[i + 1]
+                answers_from_the_two_parent_prompts = top_prompts_answers_list[i:i+2]
                 if template.lower().strip()==additive.lower().strip():
                     additive = self.gpt_mutate(additive)
-                new_prompt = self.gpt_mix_and_match(template, additive, questions_list, correct_answers_list)
+                new_prompt = self.gpt_mix_and_match(template, additive, questions_list, correct_answers_list, answers_from_the_two_parent_prompts)
                 new_prompts.append(new_prompt)
         return new_prompts
     
@@ -161,9 +164,9 @@ class GeneticPromptLab:
         mutated_prompt = send_query2gpt(self.client, messages, tmp_function_template, temperature=random.random()/2+0.5)['mutated_prompt']
         return mutated_prompt
 
-    def gpt_mix_and_match(self, template, additive, questions_list, correct_answers_list):
-        example = "\n\n".join(['Question: """'+q+'"""\nIdeal Answer: """'+a+'"""' for q,a in zip(questions_list[:5], correct_answers_list[:5])])
-        messages = [{"role": "system", "content": "You are a cross-over system as part of an over-all genetic algorithm. You are to ingrain segments of an additive prompt to that of a template/control prompt to create a healthier offspring.\n\n"+"Note: For this task the over-arching Problem Description is: "+self.problem_description+"\n\nExamples for context:"+example}, {"role": "user", "content": "Template Prompt: \"\"\""+template+'"""\n'+'"""Additive Prompt: """'+additive}]
+    def gpt_mix_and_match(self, template, additive, questions_list, correct_answers_list, answers_from_parent_prompts):
+        example = "\n\n".join(['Question: """'+q+'"""\nIdeal Answer: """'+a+'"""\nYour template parent\'s answer: """'+p_0+'"""\nYour additive parent\'s answer: """'+p_1 for q,a,p_0,p_1 in zip(questions_list[:5], correct_answers_list[:5], answers_from_parent_prompts[0], answers_from_parent_prompts[1])])
+        messages = [{"role": "system", "content": "You are a cross-over system as part of an over-all genetic algorithm. You are to ingrain segments of an additive prompt to that of a template/control prompt to create a healthier offspring.\n\n"+"Note: For this task the over-arching Problem Description is: "+self.problem_description+"\n\nExample & History for context:"+example+"\n\nNote: You can use previous mistakes as stepping stones, to quote words/semantics/phrases/keywords/verbs which you think led to the mistake by the AI."}, {"role": "user", "content": "Template Prompt: \"\"\""+template+'"""\n'+'"""Additive Prompt: """'+additive}]
         child_prompt = send_query2gpt(self.client, messages, function_templates[3])['child_prompt']
         return child_prompt
 
