@@ -1,9 +1,0 @@
-Prompt,Fitness Score
-Inspect all the content in each news article to assign a classification label.,0.875
-"Detect the categorization of a news article through content analysis. Take into account classifications like Global, Athletics, Commerce, and Science/Technology. Utilize the specifics of the article to pinpoint its category.",0.875
-"Assign a classification tag to a news article from the provided choices: World, Sports, Business, or Sci/Tech.",0.875
-"Categorize a news piece into World, Sports, Business, or Sci/Tech based on its subject matter.",0.875
-"Analyze the content of every news article meticulously to allocate a classification label. Take into account different classifications like Global, Athletics, Commerce, and Technology/Science. Use the explicit particulars and data presented in the article to precisely ascertain its category.",0.875
-"Improve the categorization procedure by examining the content of a news piece and allocating it to one of the categories: World, Sports, Business, or Sci/Tech. Take into account the context, keywords, and themes of the piece to arrive at a well-considered choice for the classification tag.",0.875
-"Given the examples provided, create a prompt that allows the model to accurately categorize the queries into the specified tags.",0.875
-"Generate a task that allows the model to accurately categorize the provided samples into the correct classifications: World, Sports, Business, Sci/Tech",0.875

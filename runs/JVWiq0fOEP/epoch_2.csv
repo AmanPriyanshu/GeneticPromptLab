@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Categorize a given sentence into one of the listed categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'} based on the context.",0.625
+"Categorize a provided query into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a query, classify it into one of the following categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a sentence, classify it into one of the following categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.6875
+"Given a question or phrase, categorize it into one of the defined labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}. Be sure to include thorough justifications and evaluations for the categorization.",0.625
+Enhance the instruction set by detailing the process of categorizing the provided inquiries into the designated classes. Provide illustrative instances and stress the significance of precise categorization.,0.625
+"Classify a given question into one of the categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Categorize the provided inquiries into one of the subsequent categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.6875

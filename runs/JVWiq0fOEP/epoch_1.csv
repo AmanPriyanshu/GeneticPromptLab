@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Given a query, categorize it into one of the following categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a query, categorize it into one of the following categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a statement, categorize it under one of the labels provided: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given an inquiry, categorize it into one of the provided labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+Enhance the provided instructions by elaborating on the process of categorizing questions into the designated labels. Include specific instances and criteria for each classification to aid in precise labeling.,0.75
+"Given a query or question, identify its classification from the provided categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}. Your objective is to correctly assign the relevant label based on the query's content. Make sure the classification is accurate and aligns with the query's essence.",0.75
+"Given a sentence, categorize it into one of the provided categories: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.875
+"Create a prompt that allows the model to effectively categorize questions into the provided labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.6875

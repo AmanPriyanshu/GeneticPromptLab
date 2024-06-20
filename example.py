@@ -45,6 +45,7 @@ def main():
     population_size = 8
     generations = 10
     sample_p = 0.01
+    num_retries = 2
 
     lab = GeneticPromptLab(
         client=client, 
@@ -57,7 +58,8 @@ def main():
         model_name=model_name, 
         sample_p=sample_p, 
         init_and_fitness_sample=population_size, 
-        window_size_init=2)
+        window_size_init=2,
+        num_retries=num_retries)
     optimized_prompts = lab.genetic_algorithm(generations)
     print(optimized_prompts)
     print("-------- EXPERIMENT COMPLETED --------")
@@ -66,6 +68,8 @@ def main():
     population_size = 8
     generations = 10
     sample_p = 0.01
+    num_retries = 2
+
 
     lab = GeneticPromptLab(
         client=client, 
@@ -78,7 +82,8 @@ def main():
         model_name=model_name, 
         sample_p=sample_p, 
         init_and_fitness_sample=population_size, 
-        window_size_init=2)
+        window_size_init=2, 
+        num_retries=num_retries)
     optimized_prompts = lab.genetic_algorithm(generations)
     print(optimized_prompts)
     print("-------- EXPERIMENT COMPLETED --------")

@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Given the following news articles, predict the category of the article based on the content.",0.75
+"Given the news articles, can you classify the following questions into the correct categories: World, Sports, Business, Sci/Tech?",0.75
+"Given a news article, classify it into one of the following categories: World, Sports, Business, Sci/Tech.",0.75
+"Given a news article about a company's financial performance, predict the category of the news article.",0.75
+"Given a news article, predict the category of the news article based on its content. The categories include World, Sports, Business, and Sci/Tech.",0.75
+"Given the following samples, predict the label for the news articles based on the content.",0.6875
+"Given a news article, predict the category of the article based on its content. The categories include World, Sports, Business, and Sci/Tech. What prompt should be used to classify the news articles accurately?",0.75
+"Given a news article, predict the category of the article based on its content. The categories include World, Sports, Business, and Sci/Tech.",0.75

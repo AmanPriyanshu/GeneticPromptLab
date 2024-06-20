@@ -1,0 +1,9 @@
+Prompt,Fitness Score
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.6875
+"Given a question, classify it into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.75
+"Classify the given question into one of the following labels: {0: 'Abbreviation', 1: 'Entity', 2: 'Description and abstract concept', 3: 'Human being', 4: 'Location', 5: 'Numeric value'}",0.6875
