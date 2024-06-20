@@ -39,5 +39,19 @@ function_templates = [
             },
             "required": ["label_array"]
         }
+    },
+    {
+        "name": "prompt_mutate",
+        "description": "You are part of Genetic-Optimization Algorithm whose objective is mutate a prompt to ensure randomess within the given prompt. Observe the problem description and make modifications to the original prompt.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "mutated_prompt": {
+                    "type": "string",
+                    "description": "Re-Edit the prompt based on the following parameter, which essentially discusses the percent of string to be modified between [0.0, 1.0]. Degree to modify: "
+                },
+            },
+            "required": ["mutated_prompt"]
+        }
     }
 ]
