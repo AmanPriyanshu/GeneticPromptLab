@@ -188,19 +188,32 @@ print(optimized_prompts)
 
 ## References
 [1] H. Tanaka, N. Mori, and M. Okada, "Genetic Algorithm for Prompt Engineering with Novel Genetic Operators," IEEE, 2023.
+
 [2] Q. Guo et al., "Connecting Large Language Models with Evolutionary Algorithms Yields Powerful Prompt Optimizers," arXiv preprint arXiv:2305.15611, 2023.
+
 [3] C. Feng, Y. Sun, K. Li, P. Zhou, J. Lv, and A. Lu, "Genetic Auto-prompt Learning for Pre-trained Code Intelligence Language Models," arXiv preprint arXiv:2306.00185, 2023.
+
 [4] R. Pryzant et al., "Automatic Prompt Optimization with "Gradient Descent" and Beam Search," Microsoft Azure AI, 2023.
+
 [5] V.-T. Do et al., "Automatic Prompt Selection for Large Language Models," arXiv preprint arXiv:2306.05802, 2023.
+
 [6] G. Sabbatella et al., "Bayesian Optimization for Prompt Tuning of Black-box Large Language Models," Mathematics, vol. 12, no. 6, p. 929, 2024.
+
 [7] H. Sun et al., "Towards an Automatic Prompt Optimization Framework for AI Image Generation," Conference paper, 2023.
-[8] X. Lin et al., "Prompt Optimization with Human Feedback," arXiv preprint arXiv:2305.18290, 2023.
+
+[8] A. Priyanshu and S. Vijay, "Adaptkeybert: An attention-based approach towards few-shot & zero-shot domain adaptation of keybert," arXiv preprint arXiv:2211.07499, 2022.
+
 [9] R. Ma et al., "RLPrompt: Optimizing Discrete Text Prompts with Reinforcement Learning," arXiv preprint arXiv:2205.12548, 2022.
+
 [10] X. Wang et al., "PromptAgent: Strategic Planning with Language Models Enables Expert-level Prompt Optimization," arXiv preprint arXiv:2305.10880, 2023.
+
 [11] T. Kojima et al., "Large Language Models are Zero-Shot Reasoners," Advances in Neural Information Processing Systems, vol. 35, 2022.
+
 [12] A. Bhattacharjee et al., "Zero-shot LLM-guided Counterfactual Generation for Text," arXiv preprint arXiv:2306.06704, 2023.
+
 [13] S. Vijay and A. Priyanshu, "NERDA-Con: Extending NER models for Continual Learning--Integrating Distinct Tasks and Updating Distribution Shifts," arXiv preprint arXiv:2206.14607, 2022.
-[14] A. Priyanshu and S. Vijay, "Adaptkeybert: An attention-based approach towards few-shot & zero-shot domain adaptation of keybert," arXiv preprint arXiv:2211.07499, 2022.
+
+[14] X. Lin et al., "Prompt Optimization with Human Feedback," arXiv preprint arXiv:2305.18290, 2023.
 
 ## Cite This Work
 
