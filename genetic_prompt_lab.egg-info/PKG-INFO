@@ -7,10 +7,11 @@ Author: Aman Priyanshu and Supriti Vijay
 Author-email: amanpriyanshusms2001@gmail.com
 License: MIT
 Keywords: llm llms prompt-optimization prompt-engineering genetic-algorithms automated-prompt-generation evolutionary-algorithms evolutionary-algorithm prompt-mutation prompt-crossover AI-optimization prompt prompts prompt-tuning prompt-engineering-tools LLM-enhancements
-Classifier: Development Status :: 1 - Alpha
+Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: pandas==2.2.2
 Requires-Dist: scikit-learn==1.5.0
