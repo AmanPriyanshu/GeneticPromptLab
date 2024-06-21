@@ -87,6 +87,7 @@ The AG News dataset contains over 1 million news articles classified into catego
 #### Training Progression exploring only 10% of the training data
 ![Performance on AG News Dataset](/images/Agnews.png)
 
+#### Best Prompt within 10 generations (100 samples explored) achieves 80.5% accuracy on test-set.
 ## Quick Start
 
 To run GeneticPromptLab on the AG News dataset:
